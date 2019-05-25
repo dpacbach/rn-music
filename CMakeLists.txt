@@ -30,9 +30,3 @@ endforeach()
 # will cause a custom command to be run for each midi file, pos-
 # sibly in parallel.
 add_custom_target( midi-convert DEPENDS ${all_midi} )
-
-# === Subdirectories ==============================================
-
-# Add only the src folder because the top-level CMake file is
-# only for standalone builds of that project.
-add_subdirectory( rg-2-midi/src )
