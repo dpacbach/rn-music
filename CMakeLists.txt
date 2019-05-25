@@ -9,8 +9,8 @@ foreach( rg-file ${rg-files} )
     set( tunes ${tunes} ${stem} )
 endforeach()
 
-message( STATUS "tunes: ${tunes}" )
-message( STATUS "midis: ${midis}" )
+#message( STATUS "tunes: ${tunes}" )
+#message( STATUS "midis: ${midis}" )
 
 # Note: this command operates in the source directory instead of
 # the binary one. Also, the command being run here (`rg2midi`)
