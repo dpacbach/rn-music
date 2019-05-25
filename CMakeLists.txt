@@ -2,7 +2,16 @@ set( TUNES
   fife-and-drum-1
 )
 
-set( RG_BINARY "rg2midi/rg2midi.linux64-mint-19.1-gcc7.3" )
+if( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" )
+    set( rg2midi_platform "linux64-mint-19.1-gcc7.3" )
+elseif( ${CMAKE_SYSTEM_NAME} STREQUAL "Darwin" )
+    set( rg2midi_platform "darwin-osx-10.14-clang-4.2.1" )
+else()
+    message( FATAL "Unsupported system name: ${CMAKE_SYSTEM_NAME}" )
+endif()
+
+set( rg2m_bin "rg2midi/rg2midi.${rg2midi_platform}" )
+message( STATUS "Using rg2midi binary: ${rg2m_bin}" )
 
 # Note: this command operates in the source directory instead of
 # the binary one.
@@ -11,8 +20,8 @@ macro( create_custom_conversion_command tune )
     set( midi "midi/${tune}.mid" )
     add_custom_command(
         OUTPUT  "${CMAKE_CURRENT_SOURCE_DIR}/${midi}"
-        DEPENDS "${RG_BINARY}" "${CMAKE_CURRENT_SOURCE_DIR}/${rg}"
-        COMMAND ${RG_BINARY} ${rg} ${midi}
+        DEPENDS "${rg2m_bin}" "${CMAKE_CURRENT_SOURCE_DIR}/${rg}"
+        COMMAND ${rg2m_bin} ${rg} ${midi}
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
         COMMENT "Export ${tune}.rg to MIDI"
     )
