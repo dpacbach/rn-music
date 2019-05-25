@@ -1,0 +1,3 @@
+[submodule "rg-2-midi"]
+	path = rg-2-midi
+	url = ../../dpacbach/rg-2-midi
