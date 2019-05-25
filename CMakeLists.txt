@@ -1,6 +1,16 @@
-set( TUNES
-  fife-and-drum-1
-)
+file( GLOB rg-files "rg/*.rg" )
+
+set( midis "" )
+set( tunes "" )
+
+foreach( rg-file ${rg-files} )
+    get_filename_component( stem "${rg-file}" NAME_WE )
+    set( midis ${midis} ${CMAKE_CURRENT_SOURCE_DIR}/midi/${stem}.mid )
+    set( tunes ${tunes} ${stem} )
+endforeach()
+
+message( STATUS "tunes: ${tunes}" )
+message( STATUS "midis: ${midis}" )
 
 # Note: this command operates in the source directory instead of
 # the binary one. Also, the command being run here (`rg2midi`)
@@ -19,14 +29,11 @@ macro( create_custom_conversion_command tune )
     )
 endmacro()
 
-set( all_midi "" )
-
-foreach( tune ${TUNES} )
+foreach( tune ${tunes} )
     create_custom_conversion_command( ${tune} )
-    set( all_midi ${all_midi} ${CMAKE_CURRENT_SOURCE_DIR}/midi/${tune}.mid )
 endforeach()
 
 # The `rn` target will depend on this one, and this one in turn
 # will cause a custom command to be run for each midi file, pos-
 # sibly in parallel.
-add_custom_target( midi-convert DEPENDS ${all_midi} )
+add_custom_target( midi-convert DEPENDS ${midis} )
