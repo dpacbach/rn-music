@@ -11,7 +11,7 @@ foreach( rg-file ${rg-files} )
     set( tunes ${tunes} ${stem} )
 endforeach()
 
-set( sf $ENV{HOME}/dev/sound/sf2/musying-kite.sf2 )
+set( sf $ENV{HOME}/dev/sound/sf2/musyng-kite.sf2 )
 set( sample-rate 44100 )
 
 # Note: these commands operates in the source directory instead
@@ -53,6 +53,6 @@ endforeach()
 # sibly in parallel.
 add_custom_target( midi-convert DEPENDS ${midis} )
 add_custom_target( ogg-convert  DEPENDS ${oggs}  )
-
-# I think this should be done for us.
-# add_dependencies( ogg-convert midi-convert )
+# Need this otherwise a midi-convert command may be run multiple
+# times in parallel.
+add_dependencies( ogg-convert midi-convert )
