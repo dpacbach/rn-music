@@ -12,6 +12,14 @@ foreach( rg-file ${rg-files} )
 endforeach()
 
 set( sf $ENV{HOME}/dev/sound/sf2/musyng-kite.sf2 )
+if( NOT EXISTS ${sf} )
+    set( sf /usr/share/sounds/sf2/FluidR3_GM.sf2 )
+    if( NOT EXISTS ${sf} )
+        message( FATAL_ERROR "Cannot find any soundfonts." )
+    endif()
+endif()
+message( STATUS "Using sound font: ${sf}" )
+
 set( sample-rate 44100 )
 
 # Note: these commands operates in the source directory instead
