@@ -11,16 +11,30 @@ foreach( rg-file ${rg-files} )
     set( tunes ${tunes} ${stem} )
 endforeach()
 
-set( sf $ENV{HOME}/dev/sound/sf2/musyng-kite.sf2 )
-if( NOT EXISTS ${sf} )
-    set( sf /usr/share/sounds/sf2/FluidR3_GM.sf2 )
-    if( NOT EXISTS ${sf} )
-        message( FATAL_ERROR "Cannot find any soundfonts." )
+set( sfs
+    $ENV{HOME}/dev/sound/sf2/musyng-kite.sf2
+    /usr/share/sounds/sf2/FluidR3_GM.sf2       # Linux
+    /opt/local/share/sounds/sf2/FluidR3_GM.sf2 # OSX
+)
+
+# To hold the soundfont file used to render OGG files from MIDI.
+set( sf "" )
+
+foreach( path ${sfs} )
+    message( STATUS "testing ${path}..." )
+    if( sf STREQUAL "" AND EXISTS ${path} )
+        message( STATUS "found ${path}." )
+        set( sf ${path} )
     endif()
+endforeach()
+
+if( sf STREQUAL "" )
+    message( FATAL_ERROR "Cannot find any soundfonts." )
 endif()
+
 message( STATUS "Using sound font: ${sf}" )
 
-set( sample-rate 44100 )
+set( sample-rate 44800 )
 
 # Note: these commands operates in the source directory instead
 # of the binary one. Also, the rg2midi command being run here ac-
